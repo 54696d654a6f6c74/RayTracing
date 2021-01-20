@@ -91,7 +91,7 @@ void draw()
   
   for(PVector curr: p) point(curr.x, curr.y);    
   
-  fill(80);
+  
   beginShape();
   vertex(part.pos.x, part.pos.y);
   
@@ -174,23 +174,14 @@ void draw()
             
             //triangle(part.pos, p1, p2);
           }
-          else
-          {
-              println("daaaaaaaaa");
-              //vertex(part.pos.x, part.pos.y);
-          }
       }
       else
       {
         vertex(part.pos.x, part.pos.y);
-        //endShape();
-        
-        //beginShape();
-        //vertex(part.pos.x, part.pos.y);
       }
   }
   
   vertex(part.pos.x, part.pos.y);
-  //if(lastPoint!=null) vertex(lastPoint.x, lastPoint.y);
-  endShape(CLOSE);
+  fill(80);
+  endShape();
 }
