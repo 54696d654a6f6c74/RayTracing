@@ -1,47 +1,8 @@
-//import java.util;
-
 static class Geometry
 { 
   static float calcSurface(PVector A, PVector B, PVector C)
   {
       return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5;
-  }
-  
-  PVector intersect(Boundry wall, Ray r)
-  {
-      float x1 = wall.p1.x;
-      float y1 = wall.p1.y;
-      float x2 = wall.p2.x;
-      float y2 = wall.p2.y;
-      float x3 = r.origin.x;
-      float y3 = r.origin.y;
-      float x4 = r.origin.x + r.dir.x;
-      float y4 = r.origin.y + r.dir.y;
-      
-      float den, numo;
-      den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-      numo = (x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4);
-      
-      if(den == 0){
-        return null;
-      }
-        
-      float t = numo/den;
-      float u;
-      
-      if(t >= 0 && t <= 1)
-      {
-        numo = (x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3);
-        u = -numo/den;
-        if(u >= 0){
-          PVector ret = new PVector();
-          ret.x = x1 + t * (x2 - x1);
-          ret.y = y1 + t * (y2 - y1);
-          return ret;
-        }
-      }
-      
-      return null;
   }
   
   static PVector intersect(Boundry b1, Boundry b2)
@@ -103,13 +64,6 @@ static class Geometry
              swap(p, rInd, lInd+1);
          }
      }
-     
-     /*
-     for(int i = l+1;i<=lInd-1;i++)
-     {
-         if(isSmaller(p[0], p[l], p[i])==false) swap(p, l, i);
-     }
-     */
          
      sortPoints(p, l, lInd-1, pivot, null);
      sortPoints(p, lInd+1, r, pivot, null);
@@ -128,9 +82,6 @@ static class Geometry
               break;
           }
       }
-      
-      println(pivotInd);
-      println(p.length);
       
       int ind = 0;
       for(int i = pivotInd;i<p.length;i++) 
@@ -173,7 +124,6 @@ static class Geometry
               PVector p = intersect(walls[i], walls[j]);
               
               if(p!=null) l.add(p);
-              if(p!=null) println("daaaaaaaaaaaaa");  
           }
       }
       

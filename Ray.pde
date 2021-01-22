@@ -19,13 +19,6 @@ class Ray{
      this(b.p1, b.p2);
   }
   
-  public void lookAt(float x, float y)
-  {
-    dir.x = x - origin.x;
-    dir.y = y - origin.y;
-    dir.normalize();
-  }
-  
   public PVector cast(Boundry wall, boolean noCheck)
   {
     float x1 = wall.p1.x;

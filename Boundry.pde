@@ -11,10 +11,14 @@ class Boundry{
   
   void show()
   {
-    fill(255);
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(3);
     line(p1.x, p1.y, p2.x, p2.y);
+    
+    strokeWeight(5);
+    stroke(0, 255, 0);
+    point(p1.x, p1.y);
+    point(p2.x, p2.y);
   }
   
   boolean belongs(PVector p)
