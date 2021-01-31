@@ -1,14 +1,18 @@
-class LightSource
+class LightSource_SweepLine
 {
     PVector pos;
-    PVector[] points;
+    Point[] points;
 
-    public LightSource(float x, float y, Boundry[] walls)
+    public LightSource_SweepLine(float x, float y, Boundry[] walls)
     {
         pos = new PVector(x, y);
 
-        points = Geometry.getAllPoints(walls);
-        Geometry.sortPoints(points, 0, points.length-1, pos, null);
+        PVector[] arr = Geometry.getAllPoints(walls);
+        
+        points = new Point[arr.length];
+        for(int i = 0;i<arr.length;i++) points[i] = new Point(arr[i].x, arr[i].y);
+
+        //Geometry.sortPoints(points, 0, points.length-1, pos, null);
     }
 
     public void move(float x, float y)  
@@ -19,11 +23,12 @@ class LightSource
 
     public void castLight()
     {
+        /*
         Geometry.sortPoints(points, 0, points.length-1, pos, null);
         boolean isArc = Geometry.checkArc(points, pos);
 
         for(Boundry wall: walls) 
-        wall.show();
+            wall.show();
 
         stroke(0, 255, 0);
         strokeWeight(5);
@@ -33,31 +38,22 @@ class LightSource
 
         int iterLen = points.length;
         if(isArc==true)
-        iterLen = points.length - 1;
+            iterLen = points.length - 1;
+        
+        SweepLine sl = new SweepLine();
+        */
 
+        /*
         for(int i = 0;i<iterLen;i++)
         {
-            PVector A = points[i];
-            PVector B = points[(i+1)%points.length];
+            PVector A = new PVector(points[i].x, points[i].y);
+            PVector B = new PVector(points[(i+1)%points.length].x, points[(i+1)%points.length].y);
 
             PVector midPoint = new PVector((A.x+B.x)*0.5, (A.y+B.y)*0.5);
             Ray ray = new Ray(pos, midPoint);
             
-            PVector closest = null;
             Boundry bestWall = null;
-            
-            for(Boundry wall: walls)
-            {
-                PVector collision = ray.cast(wall, false);
-                if(collision==null) continue;
-                
-                if(closest==null
-                    || pos.dist(closest)>pos.dist(collision)) 
-                {
-                    bestWall = wall;
-                    closest = collision;
-                }
-            }
+            PVector closest = null;
             
             if(closest!=null)
             {          
@@ -78,6 +74,7 @@ class LightSource
             else
                 vertex(pos.x, pos.y);
         }
+        */
 
         fill(80);
         endShape();

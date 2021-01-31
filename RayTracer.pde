@@ -3,9 +3,9 @@ LightSource source;
 FPScounter fps;
 
 void setup()
-{  
-    size(1280, 720);
-    walls = new Boundry[100];
+{
+    size(800, 600);
+    walls = new Boundry[5];
     for(int i = 0; i < walls.length; i++)
     walls[i] = new Boundry();
 
