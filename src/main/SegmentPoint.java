@@ -1,3 +1,5 @@
+package main;
+
 class SegmentPoint extends Point
 {
     public Boundry wall;

@@ -1,22 +1,28 @@
+package main;
+
+import processing.core.*;
+
 class Ray{
+  final Main main;
   PVector origin;
   PVector dir;
   
-  public Ray(float orgX, float orgY, float dirX, float dirY)
+  public Ray(Main main, float orgX, float orgY, float dirX, float dirY)
   {
+    this.main = main;
     origin = new PVector(orgX, orgY);
     dir = new PVector(dirX-orgX, dirY-orgY);
     dir.normalize();
   }
   
-  public Ray(PVector origin, PVector dir) 
+  public Ray(Main main, PVector origin, PVector dir) 
   { 
-    this(origin.x, origin.y, dir.x, dir.y);
+    this(main, origin.x, origin.y, dir.x, dir.y);
   }
   
-  public Ray(Boundry b)
+  public Ray(Main main, Boundry b)
   {
-     this(b.p1, b.p2);
+     this(main, b.p1, b.p2);
   }
   
   public PVector cast(Boundry wall, boolean noCheck)
@@ -58,12 +64,12 @@ class Ray{
   
   public void show()
   {
-    pushMatrix();
-    stroke(255, 0, 0);
-    translate(origin.x, origin.y);
+    main.pushMatrix();
+    main.stroke(255, 0, 0);
+    main.translate(origin.x, origin.y);
     
-    strokeWeight(2);
-    line(0, 0, dir.x * 50, dir.y * 50);
-    popMatrix();
+    main.strokeWeight(2);
+    main.line(0, 0, dir.x * 50, dir.y * 50);
+    main.popMatrix();
   }
 }

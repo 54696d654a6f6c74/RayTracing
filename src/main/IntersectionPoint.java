@@ -1,3 +1,7 @@
+package main;
+
+import java.util.ArrayList;
+
 class IntersectionPoint extends Point
 {
     public ArrayList<Boundry> walls;

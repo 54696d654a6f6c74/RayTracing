@@ -1,10 +1,17 @@
+package main;
+
+import processing.core.*;
+
 class LightSource
 {
     PVector pos;
     PVector[] points;
 
-    public LightSource(float x, float y, Boundry[] walls)
+    final Main main;
+
+    public LightSource(Main main,float x, float y, Boundry[] walls)
     {
+        this.main = main;
         pos = new PVector(x, y);
 
         points = Geometry.getAllPoints(walls);
@@ -22,14 +29,14 @@ class LightSource
         Geometry.sortPoints(points, 0, points.length-1, pos, null);
         boolean isArc = Geometry.checkArc(points, pos);
 
-        for(Boundry wall: walls) 
+        for(Boundry wall: main.walls) 
         wall.show();
 
-        stroke(0, 255, 0);
-        strokeWeight(5);
+        main.stroke(0, 255, 0);
+        main.strokeWeight(5);
 
-        beginShape();
-        vertex(pos.x, pos.y);
+        main.beginShape();
+        main.vertex(pos.x, pos.y);
 
         int iterLen = points.length;
         if(isArc==true)
@@ -40,13 +47,13 @@ class LightSource
             PVector A = points[i];
             PVector B = points[(i+1)%points.length];
 
-            PVector midPoint = new PVector((A.x+B.x)*0.5, (A.y+B.y)*0.5);
-            Ray ray = new Ray(pos, midPoint);
+            PVector midPoint = new PVector((A.x+B.x)*0.5f, (A.y+B.y)*0.5f);
+            Ray ray = new Ray(this.main, pos, midPoint);
             
             PVector closest = null;
             Boundry bestWall = null;
             
-            for(Boundry wall: walls)
+            for(Boundry wall: main.walls)
             {
                 PVector collision = ray.cast(wall, false);
                 if(collision==null) continue;
@@ -61,25 +68,25 @@ class LightSource
             
             if(closest!=null)
             {          
-                Ray rA = new Ray(pos, A);
-                Ray rB = new Ray(pos, B);
+                Ray rA = new Ray(this.main, pos, A);
+                Ray rB = new Ray(this.main, pos, B);
                 
                 PVector p1 = rA.cast(bestWall, true);
                 PVector p2 = rB.cast(bestWall, true);  
                 
-                strokeWeight(0);
-                stroke(255, 0, 255);
+                main.strokeWeight(0);
+                main.stroke(255, 0, 255);
                 if(p1!=null && p2!=null) 
                 {
-                    vertex(p1.x, p1.y);
-                    vertex(p2.x, p2.y);
+                    main.vertex(p1.x, p1.y);
+                    main.vertex(p2.x, p2.y);
                 }
             }
             else
-                vertex(pos.x, pos.y);
+                main.vertex(pos.x, pos.y);
         }
 
-        fill(80);
-        endShape();
+        main.fill(80);
+        main.endShape();
     }
 }

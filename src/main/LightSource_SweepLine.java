@@ -1,10 +1,17 @@
+package main;
+
+import processing.core.*;
+
 class LightSource_SweepLine
 {
     PVector pos;
     Point[] points;
+    
+    final Main main;
 
-    public LightSource_SweepLine(float x, float y, Boundry[] walls)
+    public LightSource_SweepLine(Main main, float x, float y, Boundry[] walls)
     {
+        this.main = main;
         pos = new PVector(x, y);
 
         PVector[] arr = Geometry.getAllPoints(walls);
@@ -74,9 +81,9 @@ class LightSource_SweepLine
             else
                 vertex(pos.x, pos.y);
         }
-        */
-
+        
         fill(80);
         endShape();
+        */
     }
 }

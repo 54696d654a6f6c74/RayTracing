@@ -1,20 +1,30 @@
+package main;
 
-static class Geometry
+import processing.core.*;
+import java.util.ArrayList;
+
+public class Geometry
 {
+    static Main main;
+
+    Geometry(Main main)
+    {
+        Geometry.main = main;
+    }
+
     static float calcSurface(PVector A, PVector B, PVector C)
     {
-        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5;
+        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5f;
     }
 
     static float calcSurface(Point A, Point B, Point C)
     {
-        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5;
+        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5f;
     }
 
     static PVector intersect(Boundry b1, Boundry b2)
     {
-        RayTracer rt = new RayTracer();
-        Ray r = rt.new Ray(b1);
+        Ray r = new Ray(Geometry.main, b1);
 
         PVector p = (r).cast(b2, false);
         if(p!=null && b1.belongs(p)==false) p = null;
@@ -141,13 +151,12 @@ static class Geometry
 
     static Point[] getAllPointsDetailed(Boundry[] walls)
     {
-        RayTracer rt = new RayTracer();
-        ArrayList <RayTracer.Point> l = new ArrayList <RayTracer.Point>();
+        ArrayList <Point> l = new ArrayList <Point>();
         
-        for(RayTracer.Boundry wall: walls)
+        for(Boundry wall: walls)
         {
-            l.add(rt.new SegmentPoint(wall.p1.x, wall.p1.x));
-            l.add(rt.new SegmentPoint(wall.p2.x, wall.p2.x));
+            l.add(new SegmentPoint(wall.p1.x, wall.p1.x));
+            l.add(new SegmentPoint(wall.p2.x, wall.p2.x));
         }
 
         for(int i = 0;i<walls.length;i++)
@@ -158,13 +167,13 @@ static class Geometry
                 
                 if(collision!=null)
                 {
-                IntersectionPoint p = rt.new IntersectionPoint(collision.x, collision.y);    
+                IntersectionPoint p = new IntersectionPoint(collision.x, collision.y);    
                 l.add(p);
                 }
             }
         }
 
-        RayTracer.Point[] arr = new RayTracer.Point[l.size()];
+        Point[] arr = new Point[l.size()];
         for(int i = 0;i<l.size();i++) arr[i] = l.get(i);
 
         return arr;
@@ -182,7 +191,7 @@ static class Geometry
     static boolean checkArc(PVector p[], PVector pos)
     {
         int n = p.length;
-        ArrayList <PVector> l = new ArrayList();
+        ArrayList <PVector> l = new ArrayList<PVector>();
 
         int startInd = n - 1;
         while(startInd!=0 && calcSurface(pos, p[startInd], p[0])==0) startInd--;

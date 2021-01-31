@@ -1,9 +1,9 @@
-import java.util.ArrayList;
+package main;
 
-class Point 
+class Point
 {
     float x, y;
-    
+
     public Point(){}
     public Point(float x, float y)
     {
@@ -11,7 +11,3 @@ class Point
         this.y = y;
     }
 }
-
-
-
- 

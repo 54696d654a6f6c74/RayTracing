@@ -1,6 +1,10 @@
+package main;
+
 import java.util.*;
 
-class SweepLine 
+import processing.core.*;
+
+class SweepLine extends PApplet
 {
     private TreeSet<Boundry> activeWalls;
 
