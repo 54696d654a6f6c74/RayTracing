@@ -1,5 +1,4 @@
 package main;
-
 import processing.core.*;
 
 class LightSource

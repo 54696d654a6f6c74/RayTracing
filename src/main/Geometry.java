@@ -41,9 +41,25 @@ public class Geometry
         return A.y<B.y;
     }
 
+    static boolean isSmaller(Point A, Point B, Point pivot)
+    {
+        if(calcSurface(pivot, A, B)>0.00) return true;
+        if(calcSurface(pivot, A, B)<0.00) return false;
+
+        if(A.x!=B.x) return A.x<B.x;
+        return A.y<B.y;
+    }
+
     static void swap(PVector[] p, int ind1, int ind2)
     {
         PVector C = p[ind1];
+        p[ind1] = p[ind2];
+        p[ind2] = C;
+    }
+
+    static void swap(Point[] p, int ind1, int ind2)
+    {
+        Point C = p[ind1];
         p[ind1] = p[ind2];
         p[ind2] = C;
     }
@@ -85,33 +101,29 @@ public class Geometry
         sortPoints(p, lInd+1, r, pivot, null);
     }
 
-    static void correctCyclicShift(PVector[] p, PVector pivot)
+    static void sortPoints(Point[] p, int l, int r, Point pivot)
     {
-        int pivotInd = -1;
-        PVector[] newP = new PVector[p.length];
+        if(l>=r) return;
 
-        for(int i = 0;i<p.length;i++)
+        int lInd = l, rInd = r;
+        while(lInd<rInd)
         {
-            if(p[i]==pivot)
+            if(isSmaller(pivot, p[lInd+1], p[lInd])==true)
             {
-                pivotInd = i;
-                break;
+                swap(p, lInd, lInd+1);
+                lInd++;
+            }
+            else
+            {
+                while(rInd>lInd && isSmaller(pivot, p[rInd], p[lInd])==false) rInd--;
+                if(rInd==lInd) break;
+
+                swap(p, rInd, lInd+1);
             }
         }
 
-        int ind = 0;
-        for(int i = pivotInd;i<p.length;i++)
-        {
-        newP[ind] = p[i];
-        ind++;
-        }
-        for(int i = 0;i<pivotInd;i++)
-        {
-            newP[ind] = p[i];
-            ind++;
-        }
-
-        for(int i = 0;i<p.length;i++) p[i] = newP[i];
+        sortPoints(p, l, lInd-1, pivot);
+        sortPoints(p, lInd+1, r, pivot);
     }
 
     static void reversePoints(PVector[] p)
@@ -155,8 +167,8 @@ public class Geometry
         
         for(Boundry wall: walls)
         {
-            l.add(new SegmentPoint(wall.p1.x, wall.p1.x));
-            l.add(new SegmentPoint(wall.p2.x, wall.p2.x));
+            l.add(new SegmentPoint(wall.p1.x, wall.p1.y, wall));
+            l.add(new SegmentPoint(wall.p2.x, wall.p2.y, wall));
         }
 
         for(int i = 0;i<walls.length;i++)
@@ -167,8 +179,8 @@ public class Geometry
                 
                 if(collision!=null)
                 {
-                IntersectionPoint p = new IntersectionPoint(collision.x, collision.y);    
-                l.add(p);
+                    IntersectionPoint p = new IntersectionPoint(collision.x, collision.y);    
+                    l.add(p);
                 }
             }
         }
@@ -206,11 +218,40 @@ public class Geometry
         n = l.size();
         for(int i = 0;i<n;i++)
         {
-        PVector curr = l.get(i);
-        PVector last = l.get((i-1+n)%n);
-        PVector nxt = l.get((i+1)%n);
+            PVector curr = l.get(i);
+            PVector last = l.get((i-1+n)%n);
+            PVector nxt = l.get((i+1)%n);
 
-        if(sign(calcSurface(pos, curr, last))==sign(calcSurface(pos, curr, nxt))) return true;
+            if(sign(calcSurface(pos, curr, last))==sign(calcSurface(pos, curr, nxt))) 
+            return true;
+        }
+
+        return false;
+    }
+
+    static boolean checkArc(Point p[], Point pos)
+    {
+        int n = p.length;
+        ArrayList <Point> l = new ArrayList<Point>();
+
+        int startInd = n - 1;
+        while(startInd!=0 && calcSurface(pos, p[startInd], p[0])==0) startInd--;
+
+        l.add(p[startInd]);
+        for(int i = 1;i<n;i++)
+        {
+            Point curr = p[(i+startInd)%n];
+            if(calcSurface(pos, l.get(l.size()-1), curr)!=0) l.add(curr);
+        }
+
+        n = l.size();
+        for(int i = 0;i<n;i++)
+        {
+            Point curr = l.get(i);
+            Point last = l.get((i-1+n)%n);
+            Point nxt = l.get((i+1)%n);
+
+            if(sign(calcSurface(pos, curr, last))==sign(calcSurface(pos, curr, nxt))) return true;
         }
 
         return false;

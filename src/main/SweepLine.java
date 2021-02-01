@@ -6,14 +6,14 @@ import processing.core.*;
 
 class SweepLine extends PApplet
 {
-    private TreeSet<Boundry> activeWalls;
+    public TreeSet<Boundry> activeWalls;
 
     public SweepLine() 
     {
         this.activeWalls = new TreeSet<Boundry>();
     }
 
-    public void addEvent(Point p) 
+    public void addPoint(Point p) 
     {
         if ((p instanceof SegmentPoint) == true) addSegmentPoint((SegmentPoint)p); 
         else addIntersectionPoint((IntersectionPoint)p);
