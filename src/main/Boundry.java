@@ -14,6 +14,12 @@ class Boundry implements Comparable<Boundry>
         p1 = new PVector(main.random(0, main.width), main.random(0, main.height));
         p2 = new PVector(main.random(0, main.width), main.random(0, main.height));
     }
+    public Boundry(Main main, int x)
+    {
+        this.main = main;
+        p1 = new PVector(x, x);
+        p2 = new PVector(x, x);
+    }
 
     void show()
     {

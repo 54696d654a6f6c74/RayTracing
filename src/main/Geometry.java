@@ -2,78 +2,79 @@ package main;
 
 import processing.core.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
-public class Geometry
-{
+import javax.swing.JComboBox.KeySelectionManager;
+
+public class Geometry {
     static Main main;
 
-    Geometry(Main main)
-    {
+    Geometry(Main main) {
         Geometry.main = main;
     }
 
-    static float calcSurface(PVector A, PVector B, PVector C)
-    {
-        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5f;
+    static float calcSurface(PVector A, PVector B, PVector C) {
+        return ((float) (A.x * B.y + A.y * C.x + B.x * C.y) - (float) (A.y * B.x + A.x * C.y + B.y * C.x)) * 0.5f;
     }
 
-    static float calcSurface(Point A, Point B, Point C)
-    {
-        return ((float)(A.x*B.y + A.y*C.x + B.x*C.y) - (float)(A.y*B.x + A.x*C.y + B.y*C.x))*0.5f;
+    static float calcSurface(Point A, Point B, Point C) {
+        return ((float) (A.x * B.y + A.y * C.x + B.x * C.y) - (float) (A.y * B.x + A.x * C.y + B.y * C.x)) * 0.5f;
     }
 
-    static PVector intersect(Boundry b1, Boundry b2)
-    {
+    static PVector intersect(Boundry b1, Boundry b2) {
         Ray r = new Ray(Geometry.main, b1);
 
         PVector p = (r).cast(b2, false);
-        if(p!=null && b1.belongs(p)==false) p = null;
+        if (p != null && b1.belongs(p) == false)
+            p = null;
 
         return p;
     }
 
-    static boolean isSmaller(PVector A, PVector B, PVector pivot)
-    {
-        if(calcSurface(pivot, A, B)>0.00) return true;
-        if(calcSurface(pivot, A, B)<0.00) return false;
+    static boolean isSmaller(PVector A, PVector B, PVector pivot) {
+        if (calcSurface(pivot, A, B) > 0.00)
+            return true;
+        if (calcSurface(pivot, A, B) < 0.00)
+            return false;
 
-        if(A.x!=B.x) return A.x<B.x;
-        return A.y<B.y;
+        if (A.x != B.x)
+            return A.x < B.x;
+        return A.y < B.y;
     }
 
-    static boolean isSmaller(Point A, Point B, Point pivot)
-    {
-        if(calcSurface(pivot, A, B)>0.00) return true;
-        if(calcSurface(pivot, A, B)<0.00) return false;
+    static boolean isSmaller(Point A, Point B, Point pivot) {
+        if (calcSurface(pivot, A, B) > 0.00)
+            return true;
+        if (calcSurface(pivot, A, B) < 0.00)
+            return false;
 
-        if(A.x!=B.x) return A.x<B.x;
-        return A.y<B.y;
+        if (A.x != B.x)
+            return A.x < B.x;
+        return A.y < B.y;
     }
 
-    static void swap(PVector[] p, int ind1, int ind2)
-    {
+    static void swap(PVector[] p, int ind1, int ind2) {
         PVector C = p[ind1];
         p[ind1] = p[ind2];
         p[ind2] = C;
     }
 
-    static void swap(Point[] p, int ind1, int ind2)
-    {
+    static void swap(Point[] p, int ind1, int ind2) {
         Point C = p[ind1];
         p[ind1] = p[ind2];
         p[ind2] = C;
     }
 
-    static void sortPoints(PVector[] p, int l, int r, PVector pivot, PVector qSortPivot)
-    {
-        if(l>=r) return;
+    static void sortPoints(PVector[] p, int l, int r, PVector pivot, PVector qSortPivot) {
+        if (l >= r)
+            return;
 
-        if(qSortPivot!=null)
-        {
-            for(int i = l;i<=r;i++)
-            {
-                if(p[i]==qSortPivot)
-                {
+        if (qSortPivot != null) {
+            for (int i = l; i <= r; i++) {
+                if (p[i] == qSortPivot) {
                     swap(p, i, l);
                     break;
                 }
@@ -81,82 +82,75 @@ public class Geometry
         }
 
         int lInd = l, rInd = r;
-        while(lInd<rInd)
-        {
-            if(isSmaller(pivot, p[lInd+1], p[lInd])==true)
-            {
-                swap(p, lInd, lInd+1);
+        while (lInd < rInd) {
+            if (isSmaller(pivot, p[lInd + 1], p[lInd]) == true) {
+                swap(p, lInd, lInd + 1);
                 lInd++;
-            }
-            else
-            {
-                while(rInd>lInd && isSmaller(pivot, p[rInd], p[lInd])==false) rInd--;
-                if(rInd==lInd) break;
+            } else {
+                while (rInd > lInd && isSmaller(pivot, p[rInd], p[lInd]) == false)
+                    rInd--;
+                if (rInd == lInd)
+                    break;
 
-                swap(p, rInd, lInd+1);
+                swap(p, rInd, lInd + 1);
             }
         }
 
-        sortPoints(p, l, lInd-1, pivot, null);
-        sortPoints(p, lInd+1, r, pivot, null);
+        sortPoints(p, l, lInd - 1, pivot, null);
+        sortPoints(p, lInd + 1, r, pivot, null);
     }
 
-    static void sortPoints(Point[] p, int l, int r, Point pivot)
-    {
-        if(l>=r) return;
+    static void sortPoints(Point[] p, int l, int r, Point pivot) {
+        if (l >= r)
+            return;
 
         int lInd = l, rInd = r;
-        while(lInd<rInd)
-        {
-            if(isSmaller(pivot, p[lInd+1], p[lInd])==true)
-            {
-                swap(p, lInd, lInd+1);
+        while (lInd < rInd) {
+            if (isSmaller(pivot, p[lInd + 1], p[lInd]) == true) {
+                swap(p, lInd, lInd + 1);
                 lInd++;
-            }
-            else
-            {
-                while(rInd>lInd && isSmaller(pivot, p[rInd], p[lInd])==false) rInd--;
-                if(rInd==lInd) break;
+            } else {
+                while (rInd > lInd && isSmaller(pivot, p[rInd], p[lInd]) == false)
+                    rInd--;
+                if (rInd == lInd)
+                    break;
 
-                swap(p, rInd, lInd+1);
+                swap(p, rInd, lInd + 1);
             }
         }
 
-        sortPoints(p, l, lInd-1, pivot);
-        sortPoints(p, lInd+1, r, pivot);
+        sortPoints(p, l, lInd - 1, pivot);
+        sortPoints(p, lInd + 1, r, pivot);
     }
 
-    static void reversePoints(PVector[] p)
-    {
+    static void reversePoints(PVector[] p) {
         int l = 0, r = p.length - 1;
-        while(l<r)
-        {
+        while (l < r) {
             swap(p, l, r);
-            l++;r--;
+            l++;
+            r--;
         }
     }
 
-    static PVector[] getAllPoints(Boundry[] walls)
-    {
-        ArrayList <PVector> l = new ArrayList <PVector>();
-        for(Boundry wall: walls)
-        {
+    static PVector[] getAllPoints(Boundry[] walls) {
+        ArrayList<PVector> l = new ArrayList<PVector>();
+        for (Boundry wall : walls) {
             l.add(wall.p1);
             l.add(wall.p2);
         }
 
-        for(int i = 0;i<walls.length;i++)
-        {
-            for(int j = i+1;j<walls.length;j++)
-            {
+        for (int i = 0; i < walls.length; i++) {
+            for (int j = i + 1; j < walls.length; j++) {
                 PVector p = intersect(walls[i], walls[j]);
 
-                if(p!=null) l.add(p);
+                if (p != null)
+                    l.add(p);
             }
         }
 
         PVector[] arr = new PVector[l.size()];
-        for(int i = 0;i<l.size();i++) arr[i] = l.get(i);
+        for (int i = 0; i < l.size(); i++)
+            arr[i] = l.get(i);
 
         return arr;
     }
@@ -171,6 +165,7 @@ public class Geometry
             l.add(new SegmentPoint(wall.p2.x, wall.p2.y, wall));
         }
 
+        TreeMap <Point, TreeSet<Boundry>> mp = new TreeMap<Point, TreeSet<Boundry>>();
         for(int i = 0;i<walls.length;i++)
         {
             for(int j = i+1;j<walls.length;j++)
@@ -179,10 +174,21 @@ public class Geometry
                 
                 if(collision!=null)
                 {
-                    IntersectionPoint p = new IntersectionPoint(collision.x, collision.y);    
-                    l.add(p);
+                    Point p = new Point(collision.x, collision.y);    
+                    if(mp.containsKey(p)==false) mp.put(p, new TreeSet<Boundry>());
+
+                    mp.get(p).add(walls[i]);
+                    mp.get(p).add(walls[j]);
                 }
             }
+        }
+
+        for(Point p: mp.keySet())
+        {
+            ArrayList <Boundry> currWalls = new ArrayList<Boundry>();
+            for(Boundry w: mp.get(p)) currWalls.add(w);
+
+            l.add(new IntersectionPoint(p.x, p.y, currWalls));
         }
 
         Point[] arr = new Point[l.size()];

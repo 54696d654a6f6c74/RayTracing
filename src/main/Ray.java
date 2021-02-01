@@ -51,7 +51,7 @@ class Ray{
     {
       numo = (x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3);
       u = -numo/den;
-      if(u >= 0){
+      if(u >= 0 || noCheck==true){
         PVector ret = new PVector();
         ret.x = x1 + t * (x2 - x1);
         ret.y = y1 + t * (y2 - y1);
@@ -69,7 +69,7 @@ class Ray{
     main.translate(origin.x, origin.y);
     
     main.strokeWeight(2);
-    main.line(0, 0, dir.x * 50, dir.y * 50);
+    main.line(0, 0, dir.x * 500, dir.y * 500);
     main.popMatrix();
   }
 }
