@@ -24,7 +24,7 @@ class SweepLine extends PApplet
         this.excludedWalls = new TreeSet<Boundry>(); 
         for(Boundry wall: walls)
         {
-            if(abs(Geometry.calcSurface(pos, wall.p1, wall.p2))<0.1) this.excludedWalls.add(wall);
+            if(abs(Geometry.calcSurface(pos, wall.p1, wall.p2))<1) this.excludedWalls.add(wall);
         }
     }
 

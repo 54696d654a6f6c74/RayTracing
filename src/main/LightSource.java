@@ -38,8 +38,9 @@ class LightSource
         main.vertex(pos.x, pos.y);
 
         int iterLen = points.length;
-        if(isArc==true)
-        iterLen = points.length - 1;
+        if(isArc==true) iterLen = points.length - 1;
+
+        System.out.println(isArc);
 
         for(int i = 0;i<iterLen;i++)
         {
@@ -79,6 +80,10 @@ class LightSource
                 {
                     main.vertex(p1.x, p1.y);
                     main.vertex(p2.x, p2.y);
+                }
+                else
+                {
+                    int x = 1/0;
                 }
             }
             else

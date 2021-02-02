@@ -1,7 +1,9 @@
 package main;
+import java.lang.Math; 
 
 class Point implements Comparable<Point>
 {
+    final float eps = 0.001f;
     float x, y;
 
     public Point(){}
@@ -13,9 +15,9 @@ class Point implements Comparable<Point>
 
     private int compareFloat(float a, float b)
     {
-        if(a<b) return -1;
-        if(a==b) return 0;
-        if(a>b) return 1;
+        if(a+eps<b) return -1;
+        if(Math.abs(a-b)<eps) return 0;
+        if(a>b+eps) return 1;
 
         return 69;
     }
@@ -23,8 +25,8 @@ class Point implements Comparable<Point>
     @Override
     public int compareTo(Point other) 
     {
-        if(x!=other.x) return compareFloat(x, other.x);
-        if(y!=other.y) return compareFloat(y, other.y);
+        if(Math.abs(x-other.x)>eps) return compareFloat(x, other.x);
+        if(Math.abs(y-other.y)>eps) return compareFloat(y, other.y);
 
         return 0;
     }

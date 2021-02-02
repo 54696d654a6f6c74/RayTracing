@@ -53,7 +53,6 @@ class LightSource_SweepLine
     public void castLight()
     {
         Geometry.sortPoints(points, 0, points.length-1, new Point(pos.x, pos.y));
-        boolean isArc = Geometry.checkArc(points, new Point(pos.x, pos.y));
         
         matchSegmentPoints();
 
@@ -66,11 +65,7 @@ class LightSource_SweepLine
         main.beginShape();
         main.vertex(pos.x, pos.y);
 
-        int iterLen = points.length;
-        if(isArc==true)
-            iterLen = points.length - 1;
-        
-        SweepLine sl = new SweepLine(pos, main.walls);
+        SweepLine sl = new SweepLine(pos, main.walls);        
         for(int i = 0;i<points.length;i++)
         {
             PVector A = new PVector(points[i].x, points[i].y);
@@ -90,15 +85,20 @@ class LightSource_SweepLine
             }
         }
 
-        for(int i = 0;i<iterLen;i++)
+        for(int i = 0;i<points.length;i++)
         {
             PVector A = new PVector(points[i].x, points[i].y);
             PVector B = new PVector(points[(i+1)%points.length].x, points[(i+1)%points.length].y);
-
+            
+            
             PVector midPoint = new PVector((A.x+B.x)*0.5f, (A.y+B.y)*0.5f);
             sl.addPoint(points[i], new Ray(main, pos, midPoint));
 
-            if(Geometry.calcSurface(A, B, pos)==0.0f) continue;
+            if(Geometry.calcSurface(A, pos, B)>0)
+            {
+                continue;
+            }
+            if(main.abs(Geometry.calcSurface(A, B, pos))<1) continue;
             
             Ray ray = new Ray(main, pos, midPoint);
             

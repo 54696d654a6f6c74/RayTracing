@@ -47,7 +47,7 @@ public class Main extends PApplet
     public void settings()
     {
         new Geometry(this);
-        size(1600, 900);
+        size(1600, 800);
 
         walls = new Boundry[22];
         for(int i = 0; i < walls.length; i++)

@@ -40,18 +40,18 @@ class Ray{
     den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     numo = (x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4);
     
-    if(den == 0){
-      return null;
-    }
+    //if(numo == 0){
+    //  return null;
+   // }
       
     float t = numo/den;
     float u = -numo/den;
         
-    if((t >= 0 && t <= 1) || (noCheck==true))
+    if((t >= -0.0001 && t <= +1.00001) || (noCheck==true))
     {
       numo = (x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3);
       u = -numo/den;
-      if(u >= 0 || noCheck==true){
+      if(u >= -0.0001 || noCheck==true){
         PVector ret = new PVector();
         ret.x = x1 + t * (x2 - x1);
         ret.y = y1 + t * (y2 - y1);
