@@ -143,11 +143,15 @@ class TreapNode
         }
     }
 
+    private void updatePathToRoot()
+    {
+        if(parent!=null) parent.updatePathToRoot();
+        recalc();
+    }
+
     public int getInd()
     {
-        ArrayList <TreapNode> l = this.getPathToRoot();
-        for(TreapNode item: l) item.recalc();
-
+        updatePathToRoot();
         return getIndInternal(false);
     }
 

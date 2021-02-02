@@ -81,10 +81,6 @@ class LightSource
                     main.vertex(p1.x, p1.y);
                     main.vertex(p2.x, p2.y);
                 }
-                else
-                {
-                    int x = 1/0;
-                }
             }
             else
                 main.vertex(pos.x, pos.y);

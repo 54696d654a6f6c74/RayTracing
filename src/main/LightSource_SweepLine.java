@@ -53,7 +53,6 @@ class LightSource_SweepLine
     public void castLight()
     {
         Geometry.sortPoints(points, 0, points.length-1, new Point(pos.x, pos.y));
-        
         matchSegmentPoints();
 
         for(Boundry wall: main.walls) 
@@ -90,15 +89,10 @@ class LightSource_SweepLine
             PVector A = new PVector(points[i].x, points[i].y);
             PVector B = new PVector(points[(i+1)%points.length].x, points[(i+1)%points.length].y);
             
-            
             PVector midPoint = new PVector((A.x+B.x)*0.5f, (A.y+B.y)*0.5f);
             sl.addPoint(points[i], new Ray(main, pos, midPoint));
 
-            if(Geometry.calcSurface(A, pos, B)>0)
-            {
-                continue;
-            }
-            if(main.abs(Geometry.calcSurface(A, B, pos))<1) continue;
+            if(Math.abs(Geometry.calcSurface(A, B, pos))<1) continue;
             
             Ray ray = new Ray(main, pos, midPoint);
             

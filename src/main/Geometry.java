@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.swing.JComboBox.KeySelectionManager;
-
 public class Geometry {
     static Main main;
 
@@ -212,14 +210,14 @@ public class Geometry {
         ArrayList <PVector> l = new ArrayList<PVector>();
 
         int startInd = n - 1;
-        while(startInd!=0 && main.abs(calcSurface(pos, p[startInd], p[0]))<1) startInd--;
+        while(startInd!=0 && Math.abs(calcSurface(pos, p[startInd], p[0]))<1) startInd--;
         startInd = (startInd+1)%n;
 
         l.add(p[startInd]);
         for(int i = 1;i<n;i++)
         {
             PVector curr = p[(i+startInd)%n];
-            if(main.abs(calcSurface(pos, l.get(l.size()-1), curr))>1) l.add(curr);
+            if(Math.abs(calcSurface(pos, l.get(l.size()-1), curr))>1) l.add(curr);
         }
 
         n = l.size();
@@ -242,13 +240,13 @@ public class Geometry {
         ArrayList <Point> l = new ArrayList<Point>();
 
         int startInd = n - 1;
-        while(startInd!=0 && main.abs(calcSurface(pos, p[startInd], p[0]))<1) startInd--;
+        while(startInd!=0 && Math.abs(calcSurface(pos, p[startInd], p[0]))<1) startInd--;
 
         l.add(p[startInd]);
         for(int i = 1;i<n;i++)
         {
             Point curr = p[(i+startInd)%n];
-            if(main.abs(calcSurface(pos, l.get(l.size()-1), curr))>1) l.add(curr);
+            if(Math.abs(calcSurface(pos, l.get(l.size()-1), curr))>1) l.add(curr);
         }
 
         n = l.size();

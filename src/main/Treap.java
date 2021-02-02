@@ -1,7 +1,5 @@
 package main;
 
-
-
 class Treap 
 {
     public TreapNode root;

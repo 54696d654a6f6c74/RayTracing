@@ -6,25 +6,29 @@ import processing.core.*;
 class SweepLine extends PApplet
 {
     private Treap T;
-    private TreeSet<Boundry> activeWalls;
-    private TreeMap <Boundry, TreapNode> boundry2Node; 
-
-    private TreeSet <Boundry> excludedWalls;
+    private boolean[] activeWalls;
+    private boolean[] excludedWalls;
+    private TreapNode[] boundry2Node;
 
     public SweepLine() 
     {
         this.T = new Treap();
-        this.activeWalls = new TreeSet<Boundry>();
-        this.boundry2Node = new TreeMap<Boundry, TreapNode>();
     }
     public SweepLine(PVector pos, Boundry walls[])
     {
         this();
 
-        this.excludedWalls = new TreeSet<Boundry>(); 
+        this.activeWalls = new boolean[walls.length]; 
+        this.excludedWalls = new boolean[walls.length];
+        this.boundry2Node = new TreapNode[walls.length];
+        
         for(Boundry wall: walls)
         {
-            if(abs(Geometry.calcSurface(pos, wall.p1, wall.p2))<1) this.excludedWalls.add(wall);
+            this.boundry2Node[wall.ind] = null;
+            this.activeWalls[wall.ind] = false;
+            this.excludedWalls[wall.ind] = false;
+
+            if(abs(Geometry.calcSurface(pos, wall.p1, wall.p2))<1) this.excludedWalls[wall.ind] = true;
         }
     }
 
@@ -36,22 +40,22 @@ class SweepLine extends PApplet
 
     public void addSegmentPoint(SegmentPoint p, Ray r)
     {
-        if(excludedWalls.contains(p.wall)==true) return;
+        if(excludedWalls[p.wall.ind]==true) return;
 
-        if(boundry2Node.containsKey(p.wall)==false)
+        if(boundry2Node[p.wall.ind]==null)
         {
-            boundry2Node.put(p.wall, new TreapNode(p.wall));
+            boundry2Node[p.wall.ind] = new TreapNode(p.wall);
         }
-        TreapNode node = boundry2Node.get(p.wall);
+        TreapNode node = boundry2Node[p.wall.ind];
 
-        if(activeWalls.contains(p.wall)==true)
+        if(activeWalls[p.wall.ind]==true)
         {
-            activeWalls.remove(p.wall);
+            activeWalls[p.wall.ind] = false;
             T.removeAt(node.getInd());
         }
         else
         {
-            activeWalls.add(p.wall);
+            activeWalls[p.wall.ind] = true;
             T.insertAt(node, T.getCntBefore(r, r.origin.dist(r.cast(p.wall, true))));
         }
     }
@@ -61,10 +65,10 @@ class SweepLine extends PApplet
         int lInd = 18372139, rInd = -1;
         for(int i = 0;i<p.walls.size();i++)
         {
-            if(excludedWalls.contains(p.walls.get(i))==true) continue; 
-            if(activeWalls.contains(p.walls.get(i))==false) continue;
+            if(excludedWalls[p.walls.get(i).ind]==true) continue; 
+            if(activeWalls[p.walls.get(i).ind]==false) continue;
 
-            TreapNode node = boundry2Node.get(p.walls.get(i)); 
+            TreapNode node = boundry2Node[p.walls.get(i).ind]; 
             if(node==null) continue;
 
             int ind = node.getInd();

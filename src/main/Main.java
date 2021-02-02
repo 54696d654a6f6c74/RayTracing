@@ -49,9 +49,9 @@ public class Main extends PApplet
         new Geometry(this);
         size(1600, 800);
 
-        walls = new Boundry[22];
+        walls = new Boundry[150];
         for(int i = 0; i < walls.length; i++)
-        walls[i] = new Boundry(this);
+        walls[i] = new Boundry(this, i);
 
         source = new LightSource(this, 0, 0, walls);
         source_SweepLine = new LightSource_SweepLine(this, 0, 0, walls);
