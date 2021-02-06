@@ -3,7 +3,7 @@ import java.lang.Math;
 
 class Point implements Comparable<Point>
 {
-    final float eps = 0.001f;
+    final float eps = 0.000001f;
     float x, y;
 
     public Point(){}

@@ -95,9 +95,7 @@ class LightSource_SweepLine
             if(Math.abs(Geometry.calcSurface(A, B, pos))<1) continue;
             
             Ray ray = new Ray(main, pos, midPoint);
-            
-            Boundry bestWall = null;
-            bestWall = sl.findClosestWall(ray);
+            Boundry bestWall = sl.findClosestWall(ray);
             
             if(bestWall!=null)
             {          

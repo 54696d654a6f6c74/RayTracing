@@ -160,4 +160,15 @@ class TreapNode
         if(L==null) return wall;
         return L.getLeftmost();
     }
+
+    public TreapNode getAt(int ind)
+    {
+        recalc();
+        
+        int lSz = ((L==null)?0:L.length);
+        if(lSz==ind) return this;
+
+        if(lSz<ind) return R.getAt(ind-lSz-1);
+        return L.getAt(ind);
+    }
 }

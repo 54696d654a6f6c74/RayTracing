@@ -143,4 +143,14 @@ class Treap
         if(root==null) return null;
         return root.getLeftmost();
     }
+
+    public Boundry getAt(int ind)
+    {
+        if(root==null) return null;
+
+        root.recalc();
+        if(root.length<=ind) return null;
+
+        return root.getAt(ind).wall;
+    }
 }

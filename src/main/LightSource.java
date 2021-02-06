@@ -40,8 +40,6 @@ class LightSource
         int iterLen = points.length;
         if(isArc==true) iterLen = points.length - 1;
 
-        System.out.println(isArc);
-
         for(int i = 0;i<iterLen;i++)
         {
             PVector A = points[i];

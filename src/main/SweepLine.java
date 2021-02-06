@@ -62,7 +62,7 @@ class SweepLine extends PApplet
 
     public void addIntersectionPoint(IntersectionPoint p)
     {
-        int lInd = 18372139, rInd = -1;
+        int lInd = Integer.MAX_VALUE, rInd = -1;
         for(int i = 0;i<p.walls.size();i++)
         {
             if(excludedWalls[p.walls.get(i).ind]==true) continue; 
@@ -81,25 +81,14 @@ class SweepLine extends PApplet
 
     public Boundry findClosestWall(Ray ray)
     {
-        /*
-        Boundry closestWall = null;
-        PVector closestPoint = null;
-
-        for(Boundry wall: activeWalls)
+        Boundry ans = null;
+        for(int i = 0;;i++)
         {
-            PVector collision = ray.cast(wall, true);
-            
-            if(closestPoint==null
-               || ray.origin.dist(closestPoint) > ray.origin.dist(collision)) 
-            {
-                closestWall = wall;
-                closestPoint = collision;
-            }
+            Boundry b = T.getAt(i);
+            if(b!= null && (ans==null || ray.origin.dist(ray.cast(b, true))<ray.origin.dist(ray.cast(ans, true)))) ans = b;
+            else break;
         }
 
-        return closestWall;
-        */
-
-        return T.getLeftmost();
+        return ans;
     }
 }
