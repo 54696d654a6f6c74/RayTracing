@@ -22,6 +22,16 @@ public class Geometry {
         return ((float) (A.x * B.y + A.y * C.x + B.x * C.y) - (float) (A.y * B.x + A.x * C.y + B.y * C.x)) * 0.5f;
     }
 
+    static float calcDist(Point A, Point B)
+    {
+        return (float)Math.sqrt((A.x-B.x)*(A.x-B.x) + (A.y-B.y)*(A.y-B.y));
+    }
+
+    static float calcDist(PVector A, PVector B)
+    {
+        return (float)Math.sqrt((A.x-B.x)*(A.x-B.x) + (A.y-B.y)*(A.y-B.y));
+    }
+
     static PVector intersect(Boundry b1, Boundry b2) {
         Ray r = new Ray(Geometry.main, b1);
 
@@ -64,6 +74,13 @@ public class Geometry {
         Point C = p[ind1];
         p[ind1] = p[ind2];
         p[ind2] = C;
+    }
+
+    static void swap(Boundry[] w, int ind1, int ind2) 
+    {
+        Boundry C = w[ind1];
+        w[ind1] = w[ind2];
+        w[ind2] = C;
     }
 
     static void sortPoints(PVector[] p, int l, int r, PVector pivot, PVector qSortPivot) {
@@ -119,6 +136,34 @@ public class Geometry {
 
         sortPoints(p, l, lInd - 1, pivot);
         sortPoints(p, lInd + 1, r, pivot);
+    }
+
+    static void sortWalls(Boundry[] walls, int l, int r, Point pos)
+    {
+        if (l >= r)
+            return;
+
+        int lInd = l, rInd = r;
+        while (lInd < rInd) 
+        {
+            if (pos.calcDistToSegment(walls[lInd+1]) <= pos.calcDistToSegment(walls[lInd])) 
+            {
+                swap(walls, lInd, lInd + 1);
+                lInd++;
+            } 
+            else 
+            {
+                while (rInd > lInd && pos.calcDistToSegment(walls[rInd]) >= pos.calcDistToSegment(walls[lInd]))
+                    rInd--;
+                if (rInd == lInd)
+                    break;
+
+                swap(walls, rInd, lInd + 1);
+            }
+        }
+
+        sortWalls(walls, l, lInd - 1, pos);
+        sortWalls(walls, lInd + 1, r, pos);
     }
 
     static void reversePoints(PVector[] p) {

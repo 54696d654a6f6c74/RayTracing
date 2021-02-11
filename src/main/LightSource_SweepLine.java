@@ -11,6 +11,7 @@ class LightSource_SweepLine
     Point[] points;
     
     final Main main;
+    VisibilityEstimator ve;
 
     public LightSource_SweepLine(Main main, float x, float y, Boundry[] walls)
     {
@@ -19,6 +20,7 @@ class LightSource_SweepLine
 
         points = Geometry.getAllPointsDetailed(walls);
         Geometry.sortPoints(points, 0, points.length-1, new Point(pos.x, pos.y));
+        this.ve = new VisibilityEstimator(main, points, main.walls, new Point(pos.x, pos.y));
     }
 
     public void move(float x, float y)  
@@ -57,6 +59,9 @@ class LightSource_SweepLine
 
         for(Boundry wall: main.walls) 
             wall.show();
+        
+        //ve.init(main.walls, new Point(pos.x, pos.y));
+        //ve.showVisiblePoints();
 
         main.stroke(0, 255, 0);
         main.strokeWeight(5);

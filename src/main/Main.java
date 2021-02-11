@@ -46,9 +46,9 @@ public class Main extends PApplet
     public void settings()
     {
         new Geometry(this);
-        size(1600, 800);
+        size(1280, 720);
 
-        walls = new Boundry[22];
+        walls = new Boundry[100];
         for(int i = 0; i < walls.length; i++)
             walls[i] = new Boundry(this, i);
 
@@ -63,8 +63,8 @@ public class Main extends PApplet
     {
         background(0);
 
-        source_SweepLine.move(mouseX, mouseY);
-        source_SweepLine.castLight();
+        source.move(mouseX, mouseY);
+        source.castLight();
         
         fps.show();
     }

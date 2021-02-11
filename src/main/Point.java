@@ -31,5 +31,8 @@ class Point implements Comparable<Point>
         return 0;
     }
 
-
+    public float calcDistToSegment(Boundry w)
+    {
+        return (Geometry.calcSurface(new Point(w.p1.x, w.p1.y), new Point(w.p2.x, w.p2.y), this)*0.5f)/Geometry.calcDist(w.p1, w.p2);
+    }
 }

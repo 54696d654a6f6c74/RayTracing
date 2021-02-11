@@ -20,6 +20,11 @@ class Ray{
         this(main, origin.x, origin.y, dir.x, dir.y);
     }
 
+    public Ray(Main main, Point origin, Point dir) 
+    { 
+        this(main, origin.x, origin.y, dir.x, dir.y);
+    }
+
     public Ray(Main main, Boundry b)
     {
         this(main, b.p1, b.p2);
@@ -44,7 +49,7 @@ class Ray{
             return null;
             
         float t = numo/den;
-        float u = -numo/den;
+        float u;
             
         if((t >= -0.0001 && t <= +1.00001) || (noCheck==true))
         {

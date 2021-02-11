@@ -4,17 +4,19 @@ import processing.core.*;
 class LightSource
 {
     PVector pos;
-    PVector[] points;
+    Point[] points;
 
     final Main main;
+    VisibilityEstimator ve;
 
     public LightSource(Main main,float x, float y, Boundry[] walls)
     {
         this.main = main;
         pos = new PVector(x, y);
 
-        points = Geometry.getAllPoints(walls);
-        Geometry.sortPoints(points, 0, points.length-1, pos, null);
+        points = Geometry.getAllPointsDetailed(walls);
+        Geometry.sortPoints(points, 0, points.length-1, new Point(pos.x, pos.y));
+        this.ve = new VisibilityEstimator(main, points, main.walls, new Point(pos.x, pos.y));
     }
 
     public void move(float x, float y)  
@@ -23,27 +25,38 @@ class LightSource
         pos.y = y;
     }
 
+    Boundry[] takeWalls(Boundry[] w, int cnt)
+    {
+        Boundry[] out = new Boundry[cnt];
+        for(int i = 0;i<cnt;i++) out[i] = w[i];
+
+        return out;
+    }
+
     public void castLight()
     {
-        Geometry.sortPoints(points, 0, points.length-1, pos, null);
-        boolean isArc = Geometry.checkArc(points, pos);
+        Geometry.sortPoints(points, 0, points.length-1, new Point(pos.x, pos.y));
+        Geometry.sortWalls(main.walls, 0, main.walls.length-1, new Point(pos.x, pos.y));
 
         for(Boundry wall: main.walls) 
-        wall.show();
-
+            wall.show();
+        
+        ve.init(takeWalls(main.walls, Math.min(main.walls.length, 11)), new Point(pos.x, pos.y));
+        //ve.showVisiblePoints();
+        
         main.stroke(0, 255, 0);
         main.strokeWeight(5);
 
         main.beginShape();
         main.vertex(pos.x, pos.y);
 
-        int iterLen = points.length;
-        if(isArc==true) iterLen = points.length - 1;
-
-        for(int i = 0;i<iterLen;i++)
+        for(int i = 0;i<points.length;i++)
         {
-            PVector A = points[i];
-            PVector B = points[(i+1)%points.length];
+            Point A = points[i];
+            Point B = points[(i+1)%points.length];
+
+            if(Geometry.calcSurface(A, B, new Point(pos.x, pos.y))<0) continue;
+            if(Math.abs(Geometry.calcSurface(A, B, new Point(pos.x, pos.y)))<1) continue;
 
             PVector midPoint = new PVector((A.x+B.x)*0.5f, (A.y+B.y)*0.5f);
             Ray ray = new Ray(this.main, pos, midPoint);
@@ -66,8 +79,8 @@ class LightSource
             
             if(closest!=null)
             {          
-                Ray rA = new Ray(this.main, pos, A);
-                Ray rB = new Ray(this.main, pos, B);
+                Ray rA = new Ray(this.main, new Point(pos.x, pos.y), A);
+                Ray rB = new Ray(this.main, new Point(pos.x, pos.y), B);
                 
                 PVector p1 = rA.cast(bestWall, true);
                 PVector p2 = rB.cast(bestWall, true);  
