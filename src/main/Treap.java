@@ -35,8 +35,8 @@ class Treap
 
     private Pair <TreapNode, TreapNode> SplitSz(TreapNode T, int sz)
     {
-        if(T==null) return new Pair<TreapNode, TreapNode>(null, null);
-        if(sz==0 )  return new Pair<TreapNode, TreapNode>(null, T);
+        if(T==null) return new Pair<>(null, null);
+        if(sz==0 )  return new Pair<>(null, T);
         
         T.recalc();
 
@@ -69,34 +69,8 @@ class Treap
                 help.getFirst().recalc();
             }
 
-            return new Pair<TreapNode, TreapNode>(help.getFirst(), T);
+            return new Pair<>(help.getFirst(), T);
         }
-    }
-    
-    void treapTest(Main main)
-    {
-        root = null;
-        root = Merge(root, new TreapNode(new Boundry(main, 1)));
-        root = Merge(root, new TreapNode(new Boundry(main, 2)));
-        root = Merge(root, new TreapNode(new Boundry(main, 3)));
-        root = Merge(root, new TreapNode(new Boundry(main, 4)));
-        root = Merge(root, new TreapNode(new Boundry(main, 5)));
-
-        root.print();
-
-        root.invert();
-
-        
-        TreapNode T = null;
-        T = Merge(T, new TreapNode(new Boundry(main, 6)));
-        T = Merge(T, new TreapNode(new Boundry(main, 7)));
-        T = Merge(T, new TreapNode(new Boundry(main, 8)));
-
-        root = Merge(root, T);
-        root.print();
-
-        root.invert();
-        root.print();
     }
 
     public void insertAt(TreapNode x, int ind)
@@ -126,22 +100,10 @@ class Treap
         root = Merge(root, help1.getSecond());
     }
 
-    public void print()
-    {
-        if(root!=null) root.print();
-        System.out.println("-------");
-    }
-
     public int getCntBefore(Ray r, float dist)
     {
         if(root==null) return 0;
         return root.getCntBefore(r, dist);
-    }
-
-    public Boundry getLeftmost()
-    {
-        if(root==null) return null;
-        return root.getLeftmost();
     }
 
     public Boundry getAt(int ind)

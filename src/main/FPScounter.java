@@ -25,8 +25,6 @@ public class FPScounter
     {
         update();
 
-        Main.println(fps);
-
         main.fill(255);
         main.textSize(20);
         main.text(fps, 0, 20);

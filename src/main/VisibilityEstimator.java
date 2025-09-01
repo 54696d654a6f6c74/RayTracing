@@ -82,18 +82,4 @@ public class VisibilityEstimator
 
         return true;
     }
-
-    public void showVisiblePoints()
-    {
-        main.stroke(255, 0, 0);
-        main.strokeWeight(19);
-
-        for(int i = 0;i<allPoints.length;i++)
-        {
-            if(isPointVisible[i]==true) 
-            {
-                main.point(allPoints[i].x, allPoints[i].y);
-            }
-        }
-    }
 }

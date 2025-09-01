@@ -16,7 +16,6 @@ class TreapNode
     public TreapNode L, R;
     public TreapNode parent;
 
-    //public TreapNode(){}
     public TreapNode(Boundry wall)
     {
         this.wall = wall;

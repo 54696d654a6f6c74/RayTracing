@@ -31,23 +31,23 @@ class LightSource_SweepLine
 
     private void matchSegmentPoints()
     {
-        TreeMap <Boundry, Integer> mp = new TreeMap<Boundry, Integer>();
+        TreeMap <Boundry, Integer> mp = new TreeMap<>();
         for(int i = 0;i<points.length;i++)
         {
-            if((points[i] instanceof SegmentPoint)==false) continue;
+            if(!(points[i] instanceof SegmentPoint)) continue;
             SegmentPoint p = (SegmentPoint)(points[i]);
 
-            if(mp.containsKey(p.wall)==false) mp.put(p.wall, i);
+            if(!mp.containsKey(p.wall)) mp.put(p.wall, i);
             else ((SegmentPoint)points[i]).counterpartInd = mp.get(p.wall);
         }
 
         mp = new TreeMap<Boundry, Integer>();
         for(int i = points.length-1;i>=0;i--)
         {
-            if((points[i] instanceof SegmentPoint)==false) continue;
+            if(!(points[i] instanceof SegmentPoint)) continue;
             SegmentPoint p = (SegmentPoint)(points[i]);
 
-            if(mp.containsKey(p.wall)==false) mp.put(p.wall, i);
+            if(!mp.containsKey(p.wall)) mp.put(p.wall, i);
             else ((SegmentPoint)points[i]).counterpartInd = mp.get(p.wall);
         }
     }
@@ -59,9 +59,6 @@ class LightSource_SweepLine
 
         for(Boundry wall: main.walls) 
             wall.show();
-        
-        //ve.init(main.walls, new Point(pos.x, pos.y));
-        //ve.showVisiblePoints();
 
         main.stroke(0, 255, 0);
         main.strokeWeight(5);
@@ -76,7 +73,7 @@ class LightSource_SweepLine
             PVector B = new PVector(points[(i+1)%points.length].x, points[(i+1)%points.length].y);            
             PVector midPoint = new PVector((A.x+B.x)*0.5f, (A.y+B.y)*0.5f);
 
-            if((points[i] instanceof SegmentPoint)==false) 
+            if(!(points[i] instanceof SegmentPoint))
             {
                 sl.addPoint(points[i], new Ray(main, pos, midPoint));
                 continue;

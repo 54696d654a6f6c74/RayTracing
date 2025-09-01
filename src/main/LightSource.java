@@ -42,8 +42,7 @@ class LightSource
             wall.show();
         
         ve.init(takeWalls(main.walls, Math.min(main.walls.length, 11)), new Point(pos.x, pos.y));
-        //ve.showVisiblePoints();
-        
+
         main.stroke(0, 255, 0);
         main.strokeWeight(5);
 
