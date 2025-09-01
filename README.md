@@ -4,3 +4,10 @@ This is a demo of an algorithm that performs near pixel-perfect ray casting in a
 |  | | |
 |--|--|--|
 | <img src="docs/demo-1.png" width="400"> | <img src="docs/demo-2.png" width="400"> | <img src="docs/demo-3.png" width="400"> |
+
+## Running the demo
+You can start the project with the following commands:
+```
+mvn package
+mvn exec:java
+```
